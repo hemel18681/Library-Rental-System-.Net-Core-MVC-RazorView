@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Library.Web.Models.DomainModels.Students>
+
+<div class="row">
+    <div class="col-md-2"> <h4>Search Student</h4></div>
+    <div class="col-md-6"><input class="form-control" id="studentIdFilter" type="text" placeholder="Search Student Id" /></div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-controller="Rental" asp-action="SelectBooks" 
+                asp-route-studentId=@item.StudentId>Select</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#studentIdFilter").on("keyup", function () {
+            console.log('calling here')
+            var filterValue = $(this).val().toLowerCase();
+            $("#tableBody tr").filter(function () {
+                var studentId = $(this).find("td:first-child").text().toLowerCase();
+                console.log(studentId)
+                $(this).toggle(studentId.indexOf(filterValue) > -1);
+            });
+        });
+    });
+</script>

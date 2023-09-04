@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Library.Web.Models.DomainModels.Rents>
+
+<p>
+    <a class="btn btn-secondary" asp-controller="Rental" asp-action="SelectStudent">Rent Books</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StudentInformaions.StudentName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInformations.BookName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TakenDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentInformaions.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookInformations.BookName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TakenDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnDate)
+            </td>
+            @if (item.ReturnDate == null)
+            {
+                <td>
+                    <a class="btn btn-primary" asp-controller="Rental" asp-action="ReturnABook"
+                     asp-route-rentId=@item.RentId asp-route-bookId=@item.StudentInformaions.StudentId>Return</a>
+                </td>
+            }
+        </tr>
+}
+    </tbody>
+</table>

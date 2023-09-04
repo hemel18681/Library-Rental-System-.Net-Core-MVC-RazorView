@@ -1,0 +1,80 @@
+﻿@model Library.Web.Models.ViewModels.SelectBooksViewModel
+
+<form asp-controller="Rental" asp-action="RentABook">
+    <h4>Select Books For</h4>
+    <hr />
+    <div class="row m-lg-2 pl-2">
+        Student Id: @Model.StudentInformation.StudentId
+        <input hidden name="StudentInformation.StudentId" class="form-check-input" value=@Model.StudentInformation.StudentId />
+        <br />
+        Student Name: @Model.StudentInformation.StudentName
+        <input hidden name="StudentInformation.StudentName" class="form-check-input" value=@Model.StudentInformation.StudentName/>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-2"> <h4>Search Books</h4></div>
+        <div class="col-md-6"><input class="form-control" id="bookIdFilter" type="text" placeholder="Search Book Id" /></div>
+    </div>
+    <div class="row">
+        <div class="col-md-9"><h4>Select Books: </h4></div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" type="submit">Rent</button>
+        </div>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Book Id
+                </th>
+                <th>
+                    Book Name
+                </th>
+                <th>
+                    Author
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <input hidden name="Id" class="form-check-input" value="0" />
+            @for (int i=0;i<Model.BooksList.Count;i++)
+            {
+                <tr>
+                    <td>
+                        <input name="BooksList[@i].CheckBox" class="form-check-input" type="checkbox" value="true" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.BooksList[i].BookId)
+                        @Html.HiddenFor(modelItem => Model.BooksList[i].BookId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.BooksList[i].BookName)
+                        @Html.HiddenFor(modelItem => Model.BooksList[i].BookName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.BooksList[i].AuthorName)
+                        @Html.HiddenFor(modelItem => Model.BooksList[i].AuthorName)
+                        @Html.HiddenFor(modelItem => Model.BooksList[i].BookCount)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#bookIdFilter").on("keyup", function () {
+            console.log('calling here')
+            var filterValue = $(this).val().toLowerCase();
+            $("#tableBody tr").filter(function () {
+                var bookId = $(this).find("td:eq(1)").text().toLowerCase();
+                $(this).toggle(bookId.indexOf(filterValue) > -1);
+            });
+        });
+    });
+</script>
